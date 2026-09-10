@@ -1,0 +1,1002 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Agency Registration Flow Demo V7</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 40px 16px;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background: #F4F7FB;
+      color: #2E3A59;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .page {
+      width: 100%;
+      max-width: 960px;
+    }
+    .card {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 24px 24px 20px;
+      box-shadow: 0 8px 24px rgba(15,27,71,0.06);
+    }
+    h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .section {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid #E5E8EB;
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #6F7C8E;
+      margin-bottom: 12px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 12px 16px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .field label {
+      font-size: 13px;
+      color: #6F7C8E;
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      border-radius: 6px;
+      border: 1px solid #D9DDE3;
+      padding: 8px 10px;
+      font-size: 14px;
+      outline: none;
+    }
+    .field textarea { resize: vertical; }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: #0F5EDD;
+      box-shadow: 0 0 0 1px rgba(15,94,221,0.2);
+    }
+    small.hint {
+      font-size: 11px;
+      color: #9AA3B5;
+    }
+    .card-footer {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .btn-primary,
+    .btn-secondary,
+    .btn-ghost {
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: #0F5EDD;
+      color: #FFFFFF;
+    }
+    .btn-primary:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+    .btn-secondary {
+      background: #EEF3FF;
+      color: #0F5EDD;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: #6F7C8E;
+    }
+    .stepper {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 0 4px 12px;
+    }
+    .stepper-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+    .stepper-label {
+      font-size: 13px;
+      color: #9AA3B5;
+      white-space: nowrap;
+    }
+    .stepper-circle {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      border: 2px solid #D9DDE3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      background: #FFFFFF;
+      color: #6F7C8E;
+      flex-shrink: 0;
+    }
+    .stepper-item.active .stepper-circle {
+      border-color: #0F5EDD;
+      background: #0F5EDD;
+      color: #FFFFFF;
+    }
+    .stepper-item.active .stepper-label {
+      color: #0F5EDD;
+      font-weight: 600;
+    }
+    .stepper-item.completed .stepper-circle {
+      border-color: #18A957;
+      background: #18A957;
+      color: #FFFFFF;
+    }
+    .stepper-item.completed .stepper-label {
+      color: #18A957;
+    }
+    .stepper-line {
+      flex: 1;
+      height: 1px;
+      background: #D9DDE3;
+      margin: 0 8px;
+    }
+    .checkbox-inline {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #2E3A59;
+      margin-bottom: 8px;
+    }
+    .checkbox-inline input { margin: 0; }
+    .checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: #2E3A59;
+    }
+    .checkbox input { margin-top: 3px; }
+    .contract-box {
+      border-radius: 8px;
+      border: 1px dashed #D9DDE3;
+      padding: 12px 12px 10px;
+      background: #F8F9FC;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .contract-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .note-text {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #6F7C8E;
+    }
+    .success-message {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: #E8F6EE;
+      border: 1px solid #B7E0C5;
+      font-size: 13px;
+      color: #255B37;
+      display: none;
+    }
+    .hidden { display: none; }
+    @media (max-width:640px){
+      .grid-2 { grid-template-columns:1fr; }
+      body { padding:24px 8px; }
+      .card-footer {
+        flex-direction: column-reverse;
+        align-items: stretch;
+      }
+    }
+  
+    /* Final summary state */
+    .final-summary {
+      display: none;
+      padding: 28px;
+    }
+    .summary-header {
+      display:flex; justify-content:space-between; gap:16px; align-items:flex-start;
+      margin-bottom:18px;
+    }
+    .summary-eyebrow {
+      font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:#64748b; font-weight:700;
+    }
+    .summary-title {
+      margin:4px 0 0; font-size:26px; line-height:1.2; color:#0f172a;
+    }
+    .summary-meta {
+      text-align:right; font-size:12px; color:#64748b;
+    }
+    .summary-status {
+      display:inline-block; margin-top:7px; padding:5px 10px; border-radius:999px;
+      background:#e0ecff; color:#1d4ed8; font-weight:700;
+    }
+    .summary-success {
+      display:flex; gap:12px; align-items:flex-start; padding:16px;
+      background:#ecfdf3; border:1px solid #bbf7d0; border-radius:12px; margin-bottom:18px;
+    }
+    .summary-check {
+      width:30px; height:30px; border-radius:50%; background:#16a34a; color:#fff;
+      display:flex; align-items:center; justify-content:center; flex:0 0 auto; font-weight:800;
+    }
+    .summary-grid {
+      display:grid; grid-template-columns:1.3fr .9fr; gap:16px;
+    }
+    .summary-card {
+      border:1px solid #e5e7eb; border-radius:12px; padding:16px; background:#fff;
+    }
+    .summary-card h3 {
+      margin:0 0 12px; font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:#475569;
+    }
+    .summary-row {
+      display:grid; grid-template-columns:150px 1fr; gap:10px; padding:7px 0;
+      border-bottom:1px solid #f1f5f9; font-size:13px;
+    }
+    .summary-row:last-child { border-bottom:none; }
+    .summary-label { color:#64748b; }
+    .summary-value { color:#0f172a; font-weight:600; word-break:break-word; }
+    .flow-chip {
+      display:inline-block; padding:3px 9px; border-radius:999px;
+      background:#ecfdf3; color:#047857; border:1px solid #bbf7d0; font-size:11px; font-weight:700;
+    }
+    .summary-footer {
+      display:flex; justify-content:space-between; gap:16px; align-items:center;
+      padding-top:18px; margin-top:18px; border-top:1px solid #e5e7eb;
+    }
+    .summary-footer-note { color:#64748b; font-size:12px; line-height:1.5; max-width:70%; }
+    @media (max-width: 760px) {
+      .summary-grid { grid-template-columns:1fr; }
+      .summary-row { grid-template-columns:1fr; gap:3px; }
+      .summary-header, .summary-footer { flex-direction:column; }
+      .summary-meta { text-align:left; }
+      .summary-footer-note { max-width:100%; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="stepper">
+      <div class="stepper-item active" data-step="1">
+        <div class="stepper-circle">1</div>
+        <div class="stepper-label">Level 1 – Agency Information</div>
+      </div>
+      <div class="stepper-line"></div>
+      <div class="stepper-item" data-step="2">
+        <div class="stepper-circle">2</div>
+        <div class="stepper-label">Level 2 – Contract</div>
+      </div>
+      <div class="stepper-line"></div>
+      <div class="stepper-item" data-step="3">
+        <div class="stepper-circle">3</div>
+        <div class="stepper-label">Level 3 – Membership Details</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <!-- LEVEL 1 -->
+      <form id="level1" class="level-form">
+        <h2>Yeni Üyelik – Acente Bilgileri</h2>
+
+        <div class="section">
+          <div class="section-title">Agency Information</div>
+          <div class="grid-2">
+            <div class="field">
+              <label>Company Origin Country *</label>
+              <select id="originCountry" required>
+                <option value="">Seçiniz</option>
+                <option value="TR">Turkey</option>
+                <option value="DE">Germany</option>
+                <option value="FR">France</option>
+                <option value="GB">United Kingdom</option>
+                <option value="US">United States</option>
+                <option value="AZ">Azerbaijan</option>
+                <option value="AE">United Arab Emirates</option>
+                <option value="SA">Saudi Arabia</option>
+                <option value="OTHER">Other</option>
+              </select>
+              <small class="hint">
+                TR seçilirse Domestic, diğer tüm ülkeler INT olarak işlenecek.
+              </small>
+            </div>
+            <div class="field">
+              <label>Agency Name *</label>
+              <input id="agencyName" type="text" placeholder="Örn: ABC Turizm A.Ş." required disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Contact for Registration</div>
+          <div class="grid-2">
+            <div class="field">
+              <label>Authorized Person *</label>
+              <input id="authPerson" type="text" placeholder="Ad Soyad" required disabled />
+            </div>
+            <div class="field">
+              <label>Email *</label>
+              <input id="authEmail" type="email" placeholder="name@example.com" required disabled />
+            </div>
+            <div class="field">
+              <label>Land Phone</label>
+              <input id="authLand" type="tel" placeholder="+90 ..." disabled />
+            </div>
+            <div class="field">
+              <label>Mobile Phone</label>
+              <input id="authMobile" type="tel" placeholder="+90 ..." disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Management Information</div>
+          <div class="checkbox-inline">
+            <input type="checkbox" id="sameAsAuthorized" disabled />
+            <label for="sameAsAuthorized">Same with Authorized Person for Registration</label>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label>Authorized Signatory</label>
+              <input id="mgmtName" type="text" placeholder="Ad Soyad" disabled />
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input id="mgmtEmail" type="email" placeholder="signatory@mail.com" disabled />
+            </div>
+            <div class="field">
+              <label>Mobile Phone</label>
+              <input id="mgmtMobile" type="tel" placeholder="+90 ..." disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer" style="justify-content: flex-end;">
+          <button type="button" class="btn-primary" id="toLevel2">Devam Et</button>
+        </div>
+      </form>
+
+      <!-- LEVEL 2 -->
+      <form id="level2" class="level-form hidden">
+        <h2>Sözleşme ve Şartlar</h2>
+
+        <div class="section">
+          <div class="section-title">Contract</div>
+          <div class="contract-box">
+            <div class="contract-title" id="contractTitle"></div>
+            <button type="button" class="btn-secondary" id="openTerms">
+              Sözleşmeyi / Terms &amp; Conditions’ı Görüntüle
+            </button>
+            <small class="hint" id="contractHint"></small>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Onay</div>
+          <label class="checkbox">
+            <input type="checkbox" id="acceptTerms" />
+            <span>
+              Sözleşmeyi ve şartları okudum, kabul ediyorum.
+              <strong id="termsWarning">(Lütfen önce üstteki linkten görüntüleyin)</strong>
+            </span>
+          </label>
+        </div>
+
+        <div class="card-footer">
+          <button type="button" class="btn-ghost" id="backToLevel1">Önceki Adım</button>
+          <button type="button" class="btn-primary" id="toLevel3" disabled>
+            Onayla ve Devam Et
+          </button>
+        </div>
+      </form>
+
+      <!-- LEVEL 3 -->
+      <form id="level3" class="level-form hidden">
+        <h2 id="level3Title">Üyelik Bilgileri –</h2>
+
+        <!-- Domestic fields -->
+        <div id="domesticFields">
+          <div class="section">
+            <div class="section-title">Agency Information</div>
+            <div class="grid-2">
+              <div class="field">
+                <label>Agency Class *</label>
+                <select id="domAgencyClass" required>
+                  <option value="">Seçiniz</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>TURSAB No *</label>
+                <input id="domTursab" type="text" required />
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Address</div>
+            <div class="grid-2">
+              <div class="field">
+                <label>Country</label>
+                <input type="text" value="Turkey" disabled />
+              </div>
+              <div class="field">
+                <label>City *</label>
+                <input id="domCity" type="text" required />
+              </div>
+              <div class="field">
+                <label>Town *</label>
+                <input id="domTown" type="text" required />
+              </div>
+              <div class="field">
+                <label>District *</label>
+                <input id="domDistrict" type="text" required />
+              </div>
+              <div class="field">
+                <label>Street *</label>
+                <input id="domStreet" type="text" required />
+              </div>
+              <div class="field">
+                <label>Zip Code *</label>
+                <input id="domZip" type="text" required />
+              </div>
+              <div class="field" style="grid-column: 1 / -1;">
+                <label>Office Address Details</label>
+                <textarea id="domOfficeDetails" rows="2" placeholder="Opsiyonel ofis adres açıklaması"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Invoice Information</div>
+            <div class="grid-2">
+              <div class="field">
+                <label>Company Title *</label>
+                <input id="domInvTitle" type="text" required />
+              </div>
+              <div class="field">
+                <label>Tax Office *</label>
+                <input id="domInvTaxOffice" type="text" required />
+              </div>
+              <div class="field">
+                <label>Tax Number *</label>
+                <input id="domInvTaxNo" type="text" required />
+              </div>
+              <div class="field">
+                <label>Invoice City *</label>
+                <input id="domInvCity" type="text" required />
+              </div>
+              <div class="field">
+                <label>Invoice Town *</label>
+                <input id="domInvTown" type="text" required />
+              </div>
+              <div class="field">
+                <label>Invoice District *</label>
+                <input id="domInvDistrict" type="text" required />
+              </div>
+              <div class="field">
+                <label>Street *</label>
+                <input id="domInvStreet" type="text" required />
+              </div>
+              <div class="field">
+                <label>Zip Code *</label>
+                <input id="domInvZip" type="text" required />
+              </div>
+              <div class="field" style="grid-column: 1 / -1;">
+                <label>Address Details for Accounting</label>
+                <textarea id="domInvDetails" rows="2" placeholder="Faturalama için ek adres / açıklama"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Bank Information</div>
+            <div class="grid-2">
+              <div class="field" style="grid-column: 1 / -1;">
+                <label>IBAN (TR) *</label>
+                <input id="ibanDomestic" type="text" placeholder="TR________________________" />
+                <small class="hint">TR ile başlamalı ve 26 karakter olmalıdır.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-text">
+            <strong>Note:</strong> Please check your invoice details carefully. It is all your responsibility if any loss occurs because of missing and/or false invoice details provided by you.
+          </div>
+        </div>
+
+        <!-- INT fields -->
+        <div id="intFields">
+          <div class="section">
+            <div class="section-title">Company Details</div>
+            <div class="grid-2">
+              <div class="field">
+                <label>Country</label>
+                <input id="intCountryDisplay" type="text" disabled />
+              </div>
+              <div class="field">
+                <label>City *</label>
+                <input id="intCity" type="text" required />
+              </div>
+              <div class="field">
+                <label>Town *</label>
+                <input id="intTown" type="text" required />
+              </div>
+              <div class="field">
+                <label>District</label>
+                <input id="intDistrict" type="text" />
+              </div>
+              <div class="field">
+                <label>Street</label>
+                <input id="intStreet" type="text" />
+              </div>
+              <div class="field">
+                <label>Zip Code</label>
+                <input id="intZip" type="text" />
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Invoice Information</div>
+            <div class="grid-2">
+              <div class="field">
+                <label>Trade Name *</label>
+                <input id="intInvTradeName" type="text" required />
+              </div>
+              <div class="field" style="grid-column: 1 / -1;">
+                <label>Address Details</label>
+                <textarea id="intInvAddressDetails" rows="3" placeholder="Full billing address"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Bank Information</div>
+            <div class="grid-2">
+              <div class="field" style="grid-column: 1 / -1;">
+                <label>IBAN</label>
+                <input id="ibanInt" type="text" disabled placeholder="IBAN is not required for INT agencies" />
+                <small class="hint">Non-TR agencies için IBAN alanı zorunlu değildir.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-text">
+            <strong>Note:</strong> Please check your invoice details carefully. It is all your responsibility if any loss occurs because of missing and/or false invoice details provided by you.
+          </div>
+        </div>
+
+        <div class="card-footer" id="level3Footer">
+          <button type="button" class="btn-ghost" id="backToLevel2">Önceki Adım</button>
+          <button type="button" class="btn-primary" id="submitFlow">
+            Başvuruyu Tamamla
+          </button>
+        </div>
+
+        <div class="success-message" id="successMessage">
+          Başvurunuz alınmıştır. Bilgileriniz kontrol edildikten sonra, hesabınızın aktivasyonu için sizinle e-posta yoluyla iletişime geçilecektir.
+        </div>
+      </form>
+    </div>
+
+      <section id="finalSummary" class="final-summary">
+        <div class="summary-header">
+          <div>
+            <div class="summary-eyebrow">Agency Application</div>
+            <h2 class="summary-title">Application Summary</h2>
+          </div>
+          <div class="summary-meta">
+            <div>Reference: <strong>APP-DEMO-000127</strong></div>
+            <div class="summary-status">Received / In Review</div>
+          </div>
+        </div>
+
+        <div class="summary-success">
+          <div class="summary-check">✓</div>
+          <div>
+            <strong>Your application has been received successfully.</strong>
+            <div style="margin-top:4px;color:#64748b;font-size:13px;">
+              The application was submitted for review. The registered contact will be notified after the review is completed.
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <h3>Agency & Application Details</h3>
+            <div class="summary-row">
+              <div class="summary-label">Flow</div>
+              <div class="summary-value"><span id="summaryFlow" class="flow-chip"></span></div>
+            </div>
+            <div class="summary-row">
+              <div class="summary-label">Agency Name</div>
+              <div class="summary-value" id="summaryAgencyName"></div>
+            </div>
+            <div class="summary-row">
+              <div class="summary-label">Agency Class</div>
+              <div class="summary-value" id="summaryAgencyClass"></div>
+            </div>
+            <div class="summary-row">
+              <div class="summary-label">Country</div>
+              <div class="summary-value" id="summaryCountry"></div>
+            </div>
+            <div class="summary-row">
+              <div class="summary-label">Registration Contact</div>
+              <div class="summary-value" id="summaryRegistrationContact"></div>
+            </div>
+            <div class="summary-row" id="summaryIbanRow">
+              <div class="summary-label">IBAN</div>
+              <div class="summary-value" id="summaryIban"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="summary-card" style="margin-bottom:16px;">
+              <h3>Contact Information</h3>
+              <div class="summary-row">
+                <div class="summary-label">Name</div>
+                <div class="summary-value" id="summaryContactName"></div>
+              </div>
+              <div class="summary-row">
+                <div class="summary-label">Email</div>
+                <div class="summary-value" id="summaryContactEmail"></div>
+              </div>
+              <div class="summary-row">
+                <div class="summary-label">Mobile</div>
+                <div class="summary-value" id="summaryContactMobile"></div>
+              </div>
+            </div>
+
+            <div class="summary-card">
+              <h3>Authorized Signatory</h3>
+              <div class="summary-row">
+                <div class="summary-label">Name</div>
+                <div class="summary-value" id="summarySignatoryName"></div>
+              </div>
+              <div class="summary-row">
+                <div class="summary-label">Email</div>
+                <div class="summary-value" id="summarySignatoryEmail"></div>
+              </div>
+              <div class="summary-row">
+                <div class="summary-label">Mobile</div>
+                <div class="summary-value" id="summarySignatoryMobile"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-footer">
+          <div class="summary-footer-note">
+            A copy of the application summary is intended to be sent to the registered contact and the responsible internal operations team.
+          </div>
+          <button type="button" class="btn-primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">Return to Home</button>
+        </div>
+      </section>
+
+  </div>
+
+  <script>
+    let currentStep = 1;
+    let selectedCountry = "";
+    let hasOpenedTerms = false;
+    let isSubmitted = false;
+
+    const stepperItems = document.querySelectorAll(".stepper-item");
+
+    const stepper = document.querySelector(".stepper");
+    const finalSummary = document.getElementById("finalSummary");
+
+    const level1 = document.getElementById("level1");
+    const level2 = document.getElementById("level2");
+    const level3 = document.getElementById("level3");
+
+    const toLevel2Btn = document.getElementById("toLevel2");
+    const toLevel3Btn = document.getElementById("toLevel3");
+    const submitFlowBtn = document.getElementById("submitFlow");
+    const backToLevel1Btn = document.getElementById("backToLevel1");
+    const backToLevel2Btn = document.getElementById("backToLevel2");
+    const level3Footer = document.getElementById("level3Footer");
+    const successMessage = document.getElementById("successMessage");
+
+    const originCountrySelect = document.getElementById("originCountry");
+    const contractTitle = document.getElementById("contractTitle");
+    const contractHint = document.getElementById("contractHint");
+    const openTermsBtn = document.getElementById("openTerms");
+    const acceptTermsChk = document.getElementById("acceptTerms");
+    const termsWarning = document.getElementById("termsWarning");
+
+    const level3Title = document.getElementById("level3Title");
+    const domesticFields = document.getElementById("domesticFields");
+    const intFields = document.getElementById("intFields");
+    const intCountryDisplay = document.getElementById("intCountryDisplay");
+
+    const sameAsAuthorizedChk = document.getElementById("sameAsAuthorized");
+    const authPersonInput = document.getElementById("authPerson");
+    const authEmailInput = document.getElementById("authEmail");
+    const authMobileInput = document.getElementById("authMobile");
+    const mgmtNameInput = document.getElementById("mgmtName");
+    const mgmtEmailInput = document.getElementById("mgmtEmail");
+    const mgmtMobileInput = document.getElementById("mgmtMobile");
+
+    const agencyNameInput = document.getElementById("agencyName");
+    const authLandInput = document.getElementById("authLand");
+
+    const ibanDomesticInput = document.getElementById("ibanDomestic");
+    const ibanIntInput = document.getElementById("ibanInt");
+
+    function updateStepper() {
+      stepperItems.forEach((item) => {
+        const step = parseInt(item.getAttribute("data-step"), 10);
+        item.classList.remove("active", "completed");
+        if (step === currentStep) {
+          item.classList.add("active");
+        } else if (step < currentStep) {
+          item.classList.add("completed");
+        }
+      });
+    }
+
+    function showStep(step) {
+      if (isSubmitted && step < 3) {
+        return;
+      }
+      currentStep = step;
+      updateStepper();
+      level1.classList.add("hidden");
+      level2.classList.add("hidden");
+      level3.classList.add("hidden");
+      if (step === 1) level1.classList.remove("hidden");
+      if (step === 2) level2.classList.remove("hidden");
+      if (step === 3) level3.classList.remove("hidden");
+    }
+
+    function enableLevel1Fields(enable) {
+      const disabled = !enable;
+      agencyNameInput.disabled = disabled;
+      authPersonInput.disabled = disabled;
+      authEmailInput.disabled = disabled;
+      authLandInput.disabled = disabled;
+      authMobileInput.disabled = disabled;
+      sameAsAuthorizedChk.disabled = disabled;
+      mgmtNameInput.disabled = disabled;
+      mgmtEmailInput.disabled = disabled;
+      mgmtMobileInput.disabled = disabled;
+    }
+
+    function updateContractTexts() {
+      const isDomestic = selectedCountry === "TR";
+      if (isDomestic) {
+        contractTitle.textContent = "Acente İş Birliği Sözleşmesi (TR)";
+        contractHint.textContent =
+          "Lütfen sözleşmeyi bilgisayarınıza indirip, imzalayıp merkez ofisimize ulaştırınız. Aksi halde hesabınız aktif edilmeyecektir.";
+      } else {
+        contractTitle.textContent = "Agency Partnership Agreement (EN)";
+        contractHint.textContent =
+          "Please download the agreement, sign it and send it to our head office. Otherwise your account will not be activated.";
+      }
+    }
+
+    function updateLevel3Layout() {
+      const isDomestic = selectedCountry === "TR";
+      if (isDomestic) {
+        level3Title.textContent = "Üyelik Bilgileri – Domestic (Turkey)";
+        domesticFields.style.display = "block";
+        intFields.style.display = "none";
+
+        // IBAN Domestic: active + required
+        ibanDomesticInput.disabled = false;
+        ibanDomesticInput.required = true;
+
+        // IBAN INT: disabled, not required
+        ibanIntInput.disabled = true;
+        ibanIntInput.required = false;
+      } else {
+        level3Title.textContent =
+          "Üyelik Bilgileri – INT (" + selectedCountry + ")";
+        domesticFields.style.display = "none";
+        intFields.style.display = "block";
+
+        // Domestic IBAN not required when INT
+        ibanDomesticInput.required = false;
+
+        // IBAN INT: disabled, not required
+        ibanIntInput.disabled = true;
+        ibanIntInput.required = false;
+
+        intCountryDisplay.value =
+          selectedCountry === "OTHER" ? "International" : selectedCountry;
+      }
+    }
+
+    originCountrySelect.addEventListener("change", (e) => {
+      selectedCountry = e.target.value || "";
+      if (selectedCountry) {
+        enableLevel1Fields(true);
+      } else {
+        enableLevel1Fields(false);
+      }
+    });
+
+    // Level 1 -> Level 2
+    toLevel2Btn.addEventListener("click", () => {
+      const originVal = originCountrySelect.value;
+      if (!originVal) {
+        alert("Lütfen önce Company Origin bilgisini seçiniz.");
+        return;
+      }
+      if (!agencyNameInput.value.trim() || !authPersonInput.value.trim() || !authEmailInput.value.trim()) {
+        alert("Lütfen zorunlu alanları doldurunuz.");
+        return;
+      }
+
+      selectedCountry = originVal;
+      hasOpenedTerms = false;
+      acceptTermsChk.checked = false;
+      termsWarning.style.display = "inline";
+      toLevel3Btn.disabled = true;
+
+      updateContractTexts();
+      showStep(2);
+    });
+
+    // Back Level 2 -> Level 1
+    backToLevel1Btn.addEventListener("click", () => {
+      showStep(1);
+    });
+
+    // Back Level 3 -> Level 2
+    backToLevel2Btn.addEventListener("click", () => {
+      showStep(2);
+    });
+
+    // Same with Authorized checkbox behavior
+    sameAsAuthorizedChk.addEventListener("change", (e) => {
+      if (e.target.checked) {
+        mgmtNameInput.value = authPersonInput.value;
+        mgmtEmailInput.value = authEmailInput.value;
+        mgmtMobileInput.value = authMobileInput.value;
+
+        mgmtNameInput.disabled = true;
+        mgmtEmailInput.disabled = true;
+        mgmtMobileInput.disabled = true;
+      } else {
+        mgmtNameInput.disabled = false;
+        mgmtEmailInput.disabled = false;
+        mgmtMobileInput.disabled = false;
+      }
+    });
+
+    // Open Terms
+    openTermsBtn.addEventListener("click", () => {
+      hasOpenedTerms = true;
+      alert("Lütfen sözleşmeyi indirip inceleyiniz. (Demo ortamında PDF yerine bu mesaj gösteriliyor.)");
+      termsWarning.style.display = "none";
+      if (acceptTermsChk.checked) {
+        toLevel3Btn.disabled = false;
+      }
+    });
+
+    // Checkbox change
+    acceptTermsChk.addEventListener("change", (e) => {
+      if (e.target.checked && hasOpenedTerms) {
+        toLevel3Btn.disabled = false;
+      } else {
+        toLevel3Btn.disabled = true;
+      }
+    });
+
+    // Level 2 -> Level 3
+    toLevel3Btn.addEventListener("click", () => {
+      if (!acceptTermsChk.checked) {
+        alert("Devam etmek için sözleşmeyi kabul etmelisiniz.");
+        return;
+      }
+      updateLevel3Layout();
+      showStep(3);
+    });
+
+    function validateDomesticIban() {
+      const val = (ibanDomesticInput.value || "").trim();
+      if (!val) return false;
+      if (!val.startsWith("TR")) return false;
+      if (val.length !== 26) return false;
+      return true;
+    }
+
+
+    function safeValue(id, fallback = "—") {
+      const el = document.getElementById(id);
+      return el && el.value && el.value.trim() ? el.value.trim() : fallback;
+    }
+
+    function renderFinalSummary(isDomestic) {
+      document.getElementById("summaryFlow").textContent =
+        isDomestic ? "Domestic • TR" : "International • " + selectedCountry;
+      document.getElementById("summaryAgencyName").textContent = safeValue("agencyName");
+      document.getElementById("summaryAgencyClass").textContent = safeValue("agencyClass");
+      document.getElementById("summaryCountry").textContent =
+        originCountrySelect.options[originCountrySelect.selectedIndex].text;
+      document.getElementById("summaryRegistrationContact").textContent = safeValue("authPerson");
+      document.getElementById("summaryContactName").textContent = safeValue("authPerson");
+      document.getElementById("summaryContactEmail").textContent = safeValue("authEmail");
+      document.getElementById("summaryContactMobile").textContent = safeValue("authMobile");
+
+      const same = sameAsAuthorizedChk.checked;
+      document.getElementById("summarySignatoryName").textContent =
+        same ? safeValue("authPerson") : safeValue("mgmtName");
+      document.getElementById("summarySignatoryEmail").textContent =
+        same ? safeValue("authEmail") : safeValue("mgmtEmail");
+      document.getElementById("summarySignatoryMobile").textContent =
+        same ? safeValue("authMobile") : safeValue("mgmtMobile");
+
+      const ibanRow = document.getElementById("summaryIbanRow");
+      if (isDomestic) {
+        ibanRow.style.display = "grid";
+        document.getElementById("summaryIban").textContent = safeValue("ibanDomestic");
+      } else {
+        ibanRow.style.display = "none";
+      }
+
+      stepper.style.display = "none";
+      level1.classList.add("hidden");
+      level2.classList.add("hidden");
+      level3.classList.add("hidden");
+      finalSummary.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Submit
+    submitFlowBtn.addEventListener("click", () => {
+      const isDomestic = selectedCountry === "TR";
+
+      if (isDomestic) {
+        if (!validateDomesticIban()) {
+          alert("Lütfen geçerli bir TR IBAN giriniz (TR ile başlayan 26 karakter).");
+          return;
+        }
+      }
+
+      isSubmitted = true;
+      backToLevel2Btn.disabled = true;
+      submitFlowBtn.disabled = true;
+      level3Footer.style.opacity = 0.6;
+      renderFinalSummary(isDomestic);
+    });
+
+    // init
+    enableLevel1Fields(false);
+    showStep(1);
+    updateContractTexts();
+  </script>
+</body>
+</html>

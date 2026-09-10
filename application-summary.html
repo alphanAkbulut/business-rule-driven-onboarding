@@ -1,0 +1,524 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Yeni Acente Başvurusu - Özet V3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --primary: #005b96;
+      --primary-light: #e6f1fb;
+      --accent: #ff8a00;
+      --bg: #f5f7fb;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+      --border-subtle: #e0e7ff;
+      --card-radius: 18px;
+      --shadow-soft: 0 14px 30px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top left, #ffffff 0, #f5f7fb 42%, #e9f0ff 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      color: var(--text-main);
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1040px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 28px 32px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      right: -70px;
+      top: -70px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(0,91,150,0.14), transparent 70%);
+      pointer-events: none;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), #002f5f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .brand-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-pill {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      color: var(--text-muted);
+      background: #fff;
+    }
+
+    .tag-pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 600;
+      border: 1px solid rgba(37,99,235,0.12);
+    }
+
+    .success-banner {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 16px;
+      border-radius: var(--card-radius);
+      background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(34,197,94,0.02));
+      border: 1px solid rgba(34,197,94,0.26);
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .success-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 18px rgba(22,163,74,0.25);
+    }
+
+    .success-icon svg {
+      width: 22px;
+      height: 22px;
+      color: #16a34a;
+    }
+
+    .success-text h1 {
+      font-size: 17px;
+      font-weight: 650;
+      margin-bottom: 2px;
+    }
+
+    .success-text p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.4fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-subtle);
+      padding: 16px 16px 14px;
+      position: relative;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15,118,110,0.06);
+      color: #047857;
+      border: 1px solid rgba(16,185,129,0.3);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 14px;
+      font-size: 12px;
+    }
+
+    .field-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .field-value {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-main);
+      word-break: break-word;
+    }
+
+    .field-value.muted {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .full-row {
+      grid-column: 1 / -1;
+    }
+
+    .note-card {
+      margin-top: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 10px 11px;
+      border-radius: 12px;
+      background: #f9fafb;
+      border: 1px dashed #d0d7e2;
+    }
+
+    .note-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      margin-top: 4px;
+      background: var(--accent);
+    }
+
+    .sidebar-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .actions {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .actions-note {
+      color: var(--text-muted);
+    }
+
+    .actions-note strong {
+      color: var(--text-main);
+    }
+
+    .button-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid transparent;
+      cursor: default;
+      user-select: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #003f7d);
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(15,23,42,0.24);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      border-color: var(--border-subtle);
+      color: var(--text-main);
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        padding: 20px 16px 18px;
+      }
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .success-banner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .info-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .actions {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="brand">
+        <div class="logo-circle">A</div>
+        <div class="brand-text">
+          <span class="brand-title">Yeni Acente Başvurusu</span>
+          <span class="brand-sub">Başvuru Özeti</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span class="header-pill">Ref: APP-DEMO-000127</span>
+        <span class="tag-pill">Alındı / İncelemede</span>
+      </div>
+    </header>
+
+    <section class="success-banner">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.4" fill="rgba(34,197,94,0.06)" />
+          <path d="M8.2 12.6L10.6 15L15.8 9.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="success-text">
+        <h1>Başvurunuz başarıyla alınmıştır.</h1>
+        <p>
+          Bilgileriniz inceleme için ekibimize iletildi. Onaylandığında kayıtlı iletişim adresiniz üzerinden sizinle iletişime geçeceğiz.
+        </p>
+      </div>
+    </section>
+
+    <main class="layout">
+      <!-- LEFT: Main summary -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Acente & Başvuru Bilgileri</div>
+          </div>
+          <span class="chip">Domestic &bull; TR</span>
+        </div>
+
+        <div class="info-grid">
+          <div>
+            <div class="field-label">Agency Name</div>
+            <div class="field-value">Example Travel Agency</div>
+          </div>
+          <div>
+            <div class="field-label">Agency Class</div>
+            <div class="field-value">B</div>
+          </div>
+
+          <div>
+            <div class="field-label">TURSAB No</div>
+            <div class="field-value">12345</div>
+          </div>
+          <div>
+            <div class="field-label">Ülke</div>
+            <div class="field-value">Türkiye (TR)</div>
+          </div>
+
+          <div>
+            <div class="field-label">Başvuru Tarihi</div>
+            <div class="field-value">26.11.2025 14:32</div>
+          </div>
+          <div>
+            <div class="field-label">Başvuruyu Yapan</div>
+            <div class="field-value">Deniz Kaya</div>
+          </div>
+
+          <div class="full-row">
+            <div class="field-label">Ofis Adresi</div>
+            <div class="field-value">
+              Örnek Mah. Örnek Cad. No:10, Kadıköy / İstanbul
+            </div>
+          </div>
+
+          <div class="full-row">
+            <div class="field-label">Fatura Bilgileri</div>
+            <div class="field-value">
+              Example Travel Agency, Kadıköy VD, Vergi No: 1234567890<br/>
+              Fatura Adresi: Örnek Mah. Örnek Cad. No:10, Kadıköy / İstanbul
+            </div>
+          </div>
+
+          <div class="full-row">
+            <div class="field-label">IBAN</div>
+            <div class="field-value">TR00 0000 0000 0000 0000 0000 00</div>
+          </div>
+        </div>
+
+        <div class="note-card">
+          <div class="note-dot"></div>
+          <div>
+            Fatura ve banka bilgileriniz başvuru inceleme sürecinde doğrulanacaktır. 
+            Herhangi bir düzeltme ihtiyacı durumunda kayıtlı iletişim adresleriniz üzerinden sizinle iletişime geçilecektir.
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Contacts & meta -->
+      <aside class="sidebar-card">
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">İletişim Bilgileri</div>
+            </div>
+          </div>
+
+          <div class="info-grid">
+            <div class="full-row">
+              <div class="field-label">Registration Contact</div>
+              <div class="field-value">Deniz Kaya</div>
+            </div>
+            <div class="full-row">
+              <div class="field-label">E-posta</div>
+              <div class="field-value">deniz.kaya@example.com</div>
+            </div>
+            <div>
+              <div class="field-label">Mobil</div>
+              <div class="field-value">+90 532 000 00 00</div>
+            </div>
+            <div>
+              <div class="field-label">Sabit Hat</div>
+              <div class="field-value muted">+90 216 000 00 00</div>
+            </div>
+          </div>
+
+          <div class="note-card" style="margin-top: 10px;">
+            <div class="note-dot"></div>
+            <div>
+              Başvurunuzla ilgili tüm bilgilendirmeler öncelikli olarak bu kişi ile paylaşılacaktır.
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">İmza Yetkilisi</div>
+            </div>
+          </div>
+
+          <div class="info-grid">
+            <div class="full-row">
+              <div class="field-label">Ad Soyad</div>
+              <div class="field-value">Deniz Kaya</div>
+            </div>
+            <div class="full-row">
+              <div class="field-label">E-posta</div>
+              <div class="field-value">deniz.kaya@example.com</div>
+            </div>
+            <div>
+              <div class="field-label">Mobil</div>
+              <div class="field-value">+90 532 000 00 00</div>
+            </div>
+            <div>
+              <div class="field-label">Not</div>
+              <div class="field-value muted">Same with Registration Contact</div>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="actions">
+      <div class="actions-note">
+        Başvurunuzun bir kopyası <strong>deniz.kaya@example.com</strong> adresine ve
+        <strong>agency.operations@example.com</strong> ekibine e-posta olarak iletilmiştir.
+      </div>
+      <div class="button-row">
+        <button class="btn btn-secondary">Ana Sayfaya Dön</button>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
