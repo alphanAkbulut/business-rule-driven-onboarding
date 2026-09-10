@@ -13,6 +13,26 @@ An anonymized product case study showing how a seemingly simple B2B agency regis
 
 The live demo is designed to let a reviewer change the **Company Origin** and observe how the same onboarding entry point produces different downstream behavior.
 
+## Prototype Preview
+
+### Step 1 — New Membership / Agency Information
+
+The onboarding starts with the information required to identify the agency and derive the applicable business path. `Company Origin Country` is the key routing input.
+
+![Step 1 — Agency Information](assets/agency-information-step.png)
+
+### Final State — Application Received / Application Summary
+
+After successful submission, the editable three-step wizard ends and the applicant is shown a non-editable completion summary.
+
+![Final State — Application Summary](assets/application-summary.png)
+
+### Notification Design — Application Summary Email Template
+
+The same application-summary information model is also represented as an email-safe notification template for applicant/internal communication.
+
+![Application Summary Email Template](assets/email-template.png)
+
 ## The Starting Point
 
 The initial requirement was framed as a standard **new agency registration flow**. At first glance, this looked like a conventional data-collection form: collect agency information, obtain agreement acceptance, collect membership details and submit the application.
@@ -153,8 +173,9 @@ See [`docs/technical-product-ownership.md`](docs/technical-product-ownership.md)
 │   ├── technical-product-ownership.md
 │   └── acceptance-criteria.md
 ├── assets/
-│   ├── onboarding-step-1.png
-│   └── application-summary.png
+│   ├── agency-information-step.png
+│   ├── application-summary.png
+│   └── email-template.png
 ├── ANONYMIZATION.md
 └── .nojekyll
 ```
